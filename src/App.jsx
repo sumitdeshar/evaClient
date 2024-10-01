@@ -22,7 +22,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/home" element={<Homepage />} />
+          <Route path="/" element={<Homepage />} />
           <Route path="/projects" element={<ProjectDisplay />} />
           <Route path="/viewproject" element={<ViewProjectDetails />} />
           {/* <Route path="/projects/:projectId" element={<Event />} /> */}
