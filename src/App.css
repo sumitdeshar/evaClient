@@ -1,0 +1,81 @@
+/* Project Card Styles */
+.project-card {
+  border: 2px solid var(--bs-primary);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.project-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Buttons */
+.custom-button {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  color: white;
+}
+
+.custom-button:hover {
+  background-color: darken(var(--bs-primary), 10%);
+  border-color: darken(var(--bs-primary), 10%);
+}
+
+/* Edit Button Icon */
+.edit-icon-button {
+  background-color: transparent;
+  border: none;
+  color: var(--bs-primary);
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.5rem;
+  padding: 0;
+}
+
+.edit-icon-button:hover {
+  color: darken(var(--bs-primary), 10%);
+  transform: scale(1.1);
+}
+
+/* Camera Card */
+.camera-card {
+  border: 2px solid var(--bs-primary);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.camera-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Form Container */
+.form-container {
+  max-width: 600px;
+  margin: auto;
+  background-color: #f8f9fa;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Custom Form */
+.custom-form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Buttons */
+.custom-button {
+  background-color: var(--bs-primary);
+  border-color: var(--bs-primary);
+  color: white;
+  width: 100%;
+}
+
+.custom-button:hover {
+  background-color: darken(var(--bs-primary), 10%);
+  border-color: darken(var(--bs-primary), 10%);
+}
