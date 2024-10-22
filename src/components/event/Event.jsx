@@ -1,16 +1,26 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Row, Card, Col, Container, Form } from "react-bootstrap";
+import "./event.css";
+import {
+  Row,
+  Col,
+  Container,
+  Form,
+  Image,
+  Table,
+  Button,
+} from "react-bootstrap";
 import { API_BASE_URL } from "../../Utils/api";
-import "../../App.css";
+import { useNavigate } from "react-router-dom";
 
-export default function EventDetails(prop) {
+export default function Event(prop) {
   const [cameras, setCameras] = useState([]);
   const [selectedCamera, setSelectedCamera] = useState(null);
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
-  // const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
+  // Fetching cameras
   const fetchCameras = async () => {
     try {
       const response = await axios.get(
@@ -51,12 +61,26 @@ export default function EventDetails(prop) {
     const cameraId = event.target.value;
     setSelectedCamera(cameraId);
     console.log(`Selected camera updated to: ${cameraId}`);
-    // setEvents([]);
+  };
+
+  const formatDate = (timestamp) => {
+    const date = new Date(timestamp);
+    return `${date.toLocaleDateString()} `;
+  };
+  const formatTime = (timestamp) => {
+    const date = new Date(timestamp);
+    return `${date.toLocaleTimeString()}`;
+  };
+
+  const handleEventDetailView = (event) => {
+    console.log(`state from event to event details:`);
+    console.log(event);
+    navigate("/:eventId/eventdetail", { state: { event: event } });
   };
 
   return (
     <>
-      <Container className="mt-4">
+      <Container className="event-container mt-4">
         <Form.Group controlId="cameraSelect" className="mb-4">
           <Form.Label>Select Camera</Form.Label>
           <Form.Control
@@ -72,32 +96,77 @@ export default function EventDetails(prop) {
             ))}
           </Form.Control>
         </Form.Group>
+      </Container>
 
-        {selectedCamera ? (
+      {selectedCamera ? (
+        events.length > 0 ? (
           <>
-            <Row>
-              {events.length > 0 ? (
-                events.map((event) => (
-                  <Col key={event.id} md={6} lg={4} className="mb-4">
-                    <Card className="event-card">
-                      <Card.Body>
-                        <Card.Title>Event ID: {event.id}</Card.Title>
-                        <Card.Text>Vehicle ID: {event.vehicle_id}</Card.Text>
-                        <Card.Text>Timestamp: {event.created_at}</Card.Text>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))
-              ) : (
-                <p>No events found for the selected camera.</p>
-              )}
-            </Row>
+            <Container>
+              <Row>
+                <Col>
+                  <Form.Group controlId="filter" className="mb-4">
+                    <Form.Control as="select">
+                      <option value="">Filter..</option>
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Button>Filter</Button>
+                </Col>
+              </Row>
+            </Container>
+
+            <Container>
+              <Table striped bordered hover>
+                <thead>
+                  <tr>
+                    <th>Event ID</th>
+                    <th>Vehicle ID</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Speed</th>
+                    <th>Loaded</th>
+                    <th>Type</th>
+                    <th>Vehicle Image</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {events.map((event) => (
+                    <tr
+                      key={event.id}
+                      onClick={() => handleEventDetailView(event)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <td>{event.id}</td>
+                      <td>{event.vehicle_id}</td>
+                      <td>{formatDate(event.created_at)}</td>
+                      <td>{formatTime(event.created_at)}</td>
+                      <td>{event.vehicle.speed_kph} km/h</td>
+                      <td>{event.is_loaded ? "Yes" : "No"}</td>
+                      <td>{event.type ? "Arriving" : "Leaving"}</td>
+                      <td>
+                        <Image
+                          src={
+                            event.event_images.length > 0
+                              ? event.event_images[0].url
+                              : "placeholder.jpg"
+                          }
+                          alt={`Event ${event.id}`}
+                          width={100}
+                        />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </Table>
+            </Container>
           </>
         ) : (
-          <p>Please select a camera to view its events.</p>
-        )}
-        <p>{events?.events?.message}</p>
-      </Container>
+          <p>No events found for the selected camera.</p>
+        )
+      ) : (
+        <p>Please select a camera to view its events.</p>
+      )}
     </>
   );
 }

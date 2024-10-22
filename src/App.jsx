@@ -8,6 +8,7 @@ import ProjectEditForm from "./components/project/ProjectEditForm";
 import AddCameraForm from "./components/project/AddCamera";
 import ViewProjectDetails from "./components/project/ViewProject";
 import EventPage from "./pages/EventPage";
+import EventDetails from "./pages/EventDetails";
 
 // function App() {
 //   console.log("App component rendered");
@@ -30,6 +31,7 @@ function App() {
           <Route path="/addproject" element={<ProjectForm />} />
           <Route path="/editproject" element={<ProjectEditForm />} />
           <Route path="/addcamera" element={<AddCameraForm />} />
+          <Route path="/:eventId/eventdetail" element={<EventDetails />} />
         </Routes>
       </BrowserRouter>
     </>

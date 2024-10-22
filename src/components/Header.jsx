@@ -6,13 +6,13 @@ export default function Header() {
 
   return (
     <Navbar bg="primary" variant="dark" expand="lg" className="mb-4">
-      <Navbar.Brand onClick={() => navigate("/home")}>
+      <Navbar.Brand onClick={() => navigate("/")}>
         Event Visualization App
       </Navbar.Brand>
       <Navbar.Toggle aria-controls="basic-navbar-nav" />
       <Navbar.Collapse id="basic-navbar-nav">
         <Nav className="ml-auto">
-          <Nav.Link onClick={() => navigate("/home")}>Home</Nav.Link>
+          <Nav.Link onClick={() => navigate("/")}>Home</Nav.Link>
           <Nav.Link onClick={() => navigate("/projects")}>Projects</Nav.Link>
           <Nav.Link href="#">About</Nav.Link>
           <Nav.Link href="#">Contact</Nav.Link>
