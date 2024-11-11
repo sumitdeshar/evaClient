@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Header from "../components/Header";
 import ProjectList from "../components/project/ProjectList";
 import axios from "axios";
-import { Button, Container } from "react-bootstrap";
+import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../Utils/api";
 
@@ -27,16 +27,16 @@ export default function ProjectDisplay() {
   return (
     <>
       <Header />
-      <Container className="text-center">
+      <div style={{ textAlign: "center", marginTop: "20px" }}>
         <Button
-          variant="primary"
-          className="mb-4"
+          type="primary"
+          style={{ marginBottom: "20px" }}
           onClick={() => navigate("/addproject")}
         >
           Add a new Project
         </Button>
         <ProjectList project={project} />
-      </Container>
+      </div>
     </>
   );
 }

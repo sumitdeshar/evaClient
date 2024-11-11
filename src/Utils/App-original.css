@@ -1,117 +1,67 @@
-/* High-Contrast Mode Adjustments */
-@media (forced-colors: active) {
-  /* Adjust colors to fit high-contrast mode */
-  :root {
-    --primary-blue: Highlight; /* System color keyword for interactive elements */
-    --accent-color: ButtonFace; /* System color keyword for background areas */
-    --background-color: Window; /* System color keyword for main background */
-  }
-
-  body {
-    background-color: Window;
-    color: WindowText; /* System color for text visibility */
-  }
-
-  .custom-button {
-    background-color: ButtonFace;
-    color: ButtonText;
-    border-color: ButtonText;
-  }
-
-  .project-card,
-  .camera-card,
-  .event-details,
-  .form-container,
-  .card {
-    border-color: ButtonText;
-    box-shadow: none; /* Remove shadows in high-contrast for better clarity */
-  }
-
-  .edit-icon-button {
-    color: Highlight;
-  }
-
-  h1,
-  h2,
-  h3,
-  .card-title {
-    color: HighlightText;
-  }
-
-  img {
-    opacity: 1; /* Ensure images are fully visible in high-contrast mode */
-  }
-}
-
 /* Global Styles */
 :root {
-  --primary-blue: #007bff;
-  --accent-color: #eaf4ff;
-  --background-color: #ffffff;
+  --primary-blue: #007bff; /* Bootstrap blue */
+  --primary-blue-dark: #0056b3; /* Darker blue for hover effects */
 }
 
+/* Body and general text styling */
 body {
-  background-color: #f0f8ff;
+  background-color: #f0f8ff; /* Light blue background */
   color: #333;
-  font-family: "Roboto", sans-serif;
-  font-size: 1rem;
+}
+/* Font Family */
+body {
+  font-family: "Roboto", sans-serif; /* Change to Poppins, Lato, etc. if you prefer */
+  font-size: 1rem; /* Base font size */
   line-height: 1.6;
+  color: #333;
 }
 
 h1,
 h2,
 h3 {
-  font-family: "Poppins", sans-serif;
+  font-family: "Poppins", sans-serif; /* Stand out with a bold font */
 }
 
 h1 {
-  font-size: 2.5rem;
+  font-size: 2.5rem; /* Large heading */
   font-weight: bold;
-  color: var(--primary-blue);
-  margin-bottom: 20px;
-  text-align: center;
 }
 
 h2 {
   font-size: 2rem;
   font-weight: bold;
-  color: var(--primary-blue);
-  margin-bottom: 20px;
-  text-align: center;
 }
 
 h3 {
   font-size: 1.75rem;
   font-weight: 600;
-  color: var(--primary-blue);
-  margin-bottom: 20px;
-  text-align: center;
 }
 
 /* Body Text */
 p,
 .card-text {
   font-size: 1.1rem;
-  color: #003366;
+  color: #003366; /* Dark blue for easy reading */
 }
 
+/* Button Text */
 .custom-button {
-  background-color: var(--primary-blue);
-  border-color: var(--primary-blue);
-  color: white;
   font-size: 1rem;
   font-weight: 500;
   text-transform: uppercase;
-  width: 100%;
 }
 
-.custom-button:hover {
-  background-color: var(--primary-blue-dark);
-  border-color: var(--primary-blue-dark);
+h1,
+h2,
+h3,
+h4 {
+  color: var(--primary-blue);
 }
 
+/* Project Card Styles */
 .project-card {
-  border: 2px solid var(--primary-blue);
+  border: 2px solid var(--primary-blue); /* Blue border */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
@@ -121,6 +71,7 @@ p,
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Camera Card */
 .camera-card {
   border: 2px solid var(--primary-blue);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -132,14 +83,16 @@ p,
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+/* Event Details Styling */
 .event-details {
   padding: 20px;
   background-color: #f8f9fa;
   border-radius: 5px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--primary-blue);
+  border: 1px solid var(--primary-blue); /* Blue border */
 }
 
+/* Form Container */
 .form-container {
   max-width: 600px;
   margin: auto;
@@ -147,14 +100,29 @@ p,
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 1px solid var(--primary-blue);
+  border: 1px solid var(--primary-blue); /* Blue border */
 }
 
+/* Custom Form */
 .custom-form {
   display: flex;
   flex-direction: column;
 }
 
+/* Buttons */
+.custom-button {
+  background-color: var(--primary-blue);
+  border-color: var(--primary-blue);
+  color: white;
+  width: 100%;
+}
+
+.custom-button:hover {
+  background-color: var(--primary-blue-dark);
+  border-color: var(--primary-blue-dark);
+}
+
+/* Edit Button Icon */
 .edit-icon-button {
   background-color: transparent;
   border: none;
@@ -171,13 +139,23 @@ p,
   transform: scale(1.1);
 }
 
+/* Image carousel */
 .carousel img {
   object-fit: cover;
   height: 400px;
 }
 
+/* Headings */
+h1,
+h2,
+h3 {
+  color: var(--primary-blue); /* Blue heading text */
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+/* Card styling */
 .card {
-  background-color: var(--accent-color);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
@@ -190,11 +168,19 @@ p,
 }
 
 .card-title {
-  color: var(--primary-blue-dark);
+  color: var(--primary-blue-dark); /* Darker blue for card titles */
   font-weight: bold;
   margin-bottom: 15px;
 }
 
+/* Card text styling */
+.card-text {
+  color: #003366; /* Darker blue text for body */
+  font-size: 1.1rem;
+  margin-bottom: 15px;
+}
+
+/* Image hover effect */
 img {
   border-radius: 8px;
   transition: transform 0.3s ease-in-out;
@@ -204,6 +190,7 @@ img:hover {
   transform: scale(1.05);
 }
 
+/* Placeholder image styling */
 img[alt^="Placeholder"] {
   opacity: 0.8;
 }

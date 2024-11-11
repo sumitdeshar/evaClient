@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { Card, Button, Row, Col, Spinner } from "react-bootstrap";
+import { Card, Button, Row, Col, Spin } from "antd";
 
 export default function ProjectList(prop) {
+  const { project } = prop;
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -10,45 +11,42 @@ export default function ProjectList(prop) {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-  }, [prop.project]);
+  }, [project]);
 
   const handleViewDetails = (event, proj) => {
     event.stopPropagation();
-    navigate("/viewproject", { state: { project: proj } });
+    navigate("/viewproject", {
+      state: { project: proj },
+    });
   };
 
   if (isLoading) {
     return (
       <div className="d-flex justify-content-center align-items-center vh-100">
-        <Spinner animation="border" variant="primary" />
+        <Spin size="large" />
       </div>
     );
   }
 
   return (
-    <Row className="justify-content-center">
-      {Array.isArray(prop.project) && prop.project.length > 0 ? (
-        prop.project.map((proj) => (
-          <Col key={proj.id} md={4} className="mb-4">
+    <Row justify="center" gutter={[16, 16]}>
+      {Array.isArray(project) && project.length > 0 ? (
+        project.map((proj) => (
+          <Col key={proj.id} xs={24} sm={12} md={8} lg={6}>
             <Card
-              className="h-100 project-card"
-              onClick={() =>
-                navigate(`/projects/${proj.id}/event`, {
-                  state: { project: proj },
-                })
-              }
-              style={{ borderColor: "var(--bs-primary)" }}
+              title={proj.name}
+              bordered
+              hoverable
+              onClick={() => navigate(`/projects/${proj.id}/event`)}
+              style={{ borderColor: "var(--primary-blue)" }}
             >
-              <Card.Body>
-                <Card.Title>{proj.name}</Card.Title>
-                <Card.Text>{proj.location}</Card.Text>
-                <Button
-                  variant="primary"
-                  onClick={(event) => handleViewDetails(event, proj)}
-                >
-                  View Details
-                </Button>
-              </Card.Body>
+              <p>{proj.location}</p>
+              <Button
+                type="primary"
+                onClick={(event) => handleViewDetails(event, proj)}
+              >
+                View Details
+              </Button>
             </Card>
           </Col>
         ))

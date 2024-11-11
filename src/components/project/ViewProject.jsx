@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../Header";
+import ProjectDetailsCard from "./ProjectDetailsCard";
+import CameraList from "./CameraList";
+import { Button, Typography, message } from "antd";
 import axios from "axios";
-import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import { Container, Row, Col } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEdit } from "@fortawesome/free-solid-svg-icons";
 import { API_BASE_URL } from "../../Utils/api";
-import "../../App.css";
+
+const { Title } = Typography;
 
 export default function ViewProjectDetails() {
   const location = useLocation();
@@ -28,6 +27,7 @@ export default function ViewProjectDetails() {
     } catch (error) {
       console.error("Error fetching data:", error);
       setError("Failed to fetch camera details.");
+      message.error("Failed to fetch camera details.");
     }
   };
 
@@ -46,63 +46,21 @@ export default function ViewProjectDetails() {
   return (
     <>
       <Header />
-      <Container className="mt-4">
-        <Card className="p-3 position-relative">
-          <h1 className="text-primary">Project Details</h1>
-          <button className="edit-icon-button" onClick={handleEditProject}>
-            <FontAwesomeIcon icon={faEdit} />
-          </button>
+      <div className="container mt-4">
+        <Title level={1} className="text-primary">
+          Project Details
+        </Title>
+        <ProjectDetailsCard project={project} onEdit={handleEditProject} />
 
-          {project ? (
-            <ul className="list-unstyled">
-              <li>
-                <strong>ID:</strong> {project.id}
-              </li>
-              <li>
-                <strong>Name:</strong> {project.name}
-              </li>
-              <li>
-                <strong>Location:</strong> {project.location}
-              </li>
-            </ul>
-          ) : (
-            <p>No project information available.</p>
-          )}
-        </Card>
-        <br />
-        <h2 className="text-primary">Camera Details</h2>
-        <Button
-          className="custom-button"
-          variant="info"
-          onClick={handleAddCamera}
-        >
+        <Title level={2} className="text-primary mt-4">
+          Camera Details
+        </Title>
+        <Button type="primary" onClick={handleAddCamera} className="mb-4">
           Add Camera
         </Button>
         {error && <p className="text-danger">{error}</p>}
-        {cameras.length > 0 ? (
-          <Row>
-            {cameras.map((camera) => (
-              <Col key={camera.id} md={6} lg={4} className="mb-4">
-                <Card className="camera-card p-3">
-                  <Card.Body>
-                    <Card.Title>{camera.name}</Card.Title>
-                    <ul className="list-unstyled">
-                      <li>
-                        <strong>Camera ID:</strong> {camera.id}
-                      </li>
-                      <li>
-                        <strong>Resolution:</strong> {camera.resolution}
-                      </li>
-                    </ul>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        ) : (
-          <p>No cameras found for this project.</p>
-        )}
-      </Container>
+        <CameraList cameras={cameras} />
+      </div>
     </>
   );
 }

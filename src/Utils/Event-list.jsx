@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Row, Col, Container, Form } from "react-bootstrap";
-import { API_BASE_URL } from "../../Utils/api";
-import "./event-flip.css";
+import { Row, Col, Container, Form, Card, Image } from "react-bootstrap";
+import { API_BASE_URL } from "./api";
+import "./event.css";
 
 export default function EventDetails(prop) {
   const [cameras, setCameras] = useState([]);
@@ -10,6 +10,7 @@ export default function EventDetails(prop) {
   const [events, setEvents] = useState([]);
   const [error, setError] = useState(null);
 
+  // Fetching cameras
   const fetchCameras = async () => {
     try {
       const response = await axios.get(
@@ -26,6 +27,7 @@ export default function EventDetails(prop) {
     fetchCameras();
   }, []);
 
+  // Fetching events based on selected camera
   const fetchEvents = async () => {
     if (!selectedCamera) return;
     try {
@@ -52,6 +54,7 @@ export default function EventDetails(prop) {
     console.log(`Selected camera updated to: ${cameraId}`);
   };
 
+  // Formatting date and time
   const formatDate = (timestamp) => {
     const date = new Date(timestamp);
     return `${date.toLocaleDateString()} `;
@@ -83,26 +86,34 @@ export default function EventDetails(prop) {
         <Row className="event-grid">
           {events.length > 0 ? (
             events.map((event) => (
-              <Col key={event.id} md={4} className="mb-4">
-                <div className="flip-card">
-                  <div className="flip-card-inner">
-                    <div className="flip-card-front">
-                      <img
+              <Col key={event.id} md={12} className="mb-4">
+                <Card className="h-100 shadow-sm event-list-item">
+                  <Row noGutters>
+                    <Col md={4}>
+                      <Image
                         src="https://picsum.photos/1000/720"
                         // src={event.imageUrl || "placeholder.jpg"}
                         alt={`Event ${event.id}`}
                         className="event-image"
+                        fluid
                       />
-                    </div>
-                    <div className="flip-card-back">
-                      <h5>Event ID: {event.id}</h5>
-                      <p>Vehicle ID: {event.vehicle_id}</p>
-                      <p>Date: {formatDate(event.created_at)}</p>{" "}
-                      <p>Time: {formatTime(event.created_at)}</p>{" "}
-                      {/* Formatted timestamp */}
-                    </div>
-                  </div>
-                </div>
+                    </Col>
+                    <Col md={8}>
+                      <Card.Body>
+                        <Card.Title>Event ID: {event.id}</Card.Title>
+                        <Card.Text>
+                          <strong>Vehicle ID:</strong> {event.vehicle_id}
+                        </Card.Text>
+                        <Card.Text>
+                          <strong>Date:</strong> {formatDate(event.created_at)}
+                        </Card.Text>
+                        <Card.Text>
+                          <strong>Time:</strong> {formatTime(event.created_at)}
+                        </Card.Text>
+                      </Card.Body>
+                    </Col>
+                  </Row>
+                </Card>
               </Col>
             ))
           ) : (

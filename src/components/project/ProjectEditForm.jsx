@@ -3,7 +3,9 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Header from "../Header";
 import axios from "axios";
 import { API_BASE_URL } from "../../Utils/api";
-import { Form, Button, Container } from "react-bootstrap";
+import { Form, Input, Button, message, Typography } from "antd";
+
+const { Title } = Typography;
 
 export default function ProjectEditForm() {
   const { state } = useLocation();
@@ -28,50 +30,66 @@ export default function ProjectEditForm() {
           },
         }
       );
-      console.log("Project updated successfully");
+      message.success("Project updated successfully");
     } catch (error) {
       console.error("Error updating project:", error);
+      message.error("Failed to update project");
     }
   };
 
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    if (!projectName) return;
-    projectEditApi();
+  const handleSubmit = async () => {
+    if (!projectName || !projectLocation) return;
+    await projectEditApi();
     navigate(`/projects/${project.id}`);
-  }
+  };
 
   return (
     <>
       <Header />
-      <Container className="form-container mt-5">
-        <Form className="custom-form" onSubmit={handleSubmit}>
-          <Form.Group controlId="project-name" className="mb-3">
-            <Form.Label>Project Name:</Form.Label>
-            <Form.Control
-              type="text"
+      <div className="container mt-5">
+        <Title level={3} className="text-center">
+          Edit Project
+        </Title>
+        <Form
+          layout="vertical"
+          onFinish={handleSubmit}
+          className="form-container mt-4"
+        >
+          <Form.Item
+            label="Project Name"
+            name="projectName"
+            initialValue={projectName}
+            rules={[{ required: true, message: "Please enter project name" }]}
+          >
+            <Input
               placeholder="Enter project name"
               value={projectName}
               onChange={(e) => setProjectName(e.target.value)}
-              required
             />
-          </Form.Group>
-          <Form.Group controlId="location" className="mb-4">
-            <Form.Label>Project Location:</Form.Label>
-            <Form.Control
-              type="text"
+          </Form.Item>
+
+          <Form.Item
+            label="Project Location"
+            name="projectLocation"
+            initialValue={projectLocation}
+            rules={[
+              { required: true, message: "Please enter project location" },
+            ]}
+          >
+            <Input
               placeholder="Enter project location"
               value={projectLocation}
               onChange={(e) => setProjectLocation(e.target.value)}
-              required
             />
-          </Form.Group>
-          <Button type="submit" className="custom-button">
-            Save Changes
-          </Button>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block>
+              Save Changes
+            </Button>
+          </Form.Item>
         </Form>
-      </Container>
+      </div>
     </>
   );
 }

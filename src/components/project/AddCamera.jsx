@@ -3,25 +3,20 @@ import { useNavigate, useLocation } from "react-router-dom";
 import Header from "../Header";
 import axios from "axios";
 import { API_BASE_URL } from "../../Utils/api";
-import { Form, Button, Container } from "react-bootstrap";
+import { Form, Input, Button, message, Typography } from "antd";
+
+const { Title } = Typography;
 
 export default function AddCameraForm() {
   const { state } = useLocation();
   const project = state?.project || {};
   const [projectId] = useState(project.id);
-  console.log("AddCameraForm projectId:", projectId);
   const [cameraName, setCameraName] = useState("");
   const [resolution, setResolution] = useState("1920*1020");
   const navigate = useNavigate();
 
   const cameraAddApi = async () => {
     try {
-      // console.log("Sending data:", {
-      //   project_id: projectId,
-      //   name: cameraName,
-      //   resolution: resolution,
-      // });
-
       await axios.post(
         `${API_BASE_URL}/create_camera`,
         {
@@ -35,48 +30,63 @@ export default function AddCameraForm() {
           },
         }
       );
-      console.log("Camera added successfully");
+      message.success("Camera added successfully");
+      navigate(`/viewproject`, { state: { project: project } });
     } catch (error) {
-      console.error("Error adding camera:", error.response.data);
+      console.error("Error adding camera:", error);
+      message.error("Failed to add camera");
     }
   };
 
-  function handleAddCameraSubmit(e) {
-    e.preventDefault();
+  const handleAddCameraSubmit = () => {
+    if (!cameraName || !resolution) return;
     cameraAddApi();
-    navigate(`/viewproject`, { state: { project: project } });
-  }
+  };
 
   return (
     <>
       <Header />
-      <Container className="form-container mt-5">
-        <Form className="custom-form" onSubmit={handleAddCameraSubmit}>
-          <Form.Group controlId="camera-name" className="mb-3">
-            <Form.Label>Camera Name:</Form.Label>
-            <Form.Control
-              type="text"
+      <div className="container mt-5">
+        <Title level={3} className="text-center">
+          Add Camera
+        </Title>
+        <Form
+          layout="vertical"
+          onFinish={handleAddCameraSubmit}
+          className="form-container mt-4"
+        >
+          <Form.Item
+            label="Camera Name"
+            name="cameraName"
+            rules={[{ required: true, message: "Please enter camera name" }]}
+          >
+            <Input
               placeholder="Enter camera name"
               value={cameraName}
               onChange={(e) => setCameraName(e.target.value)}
-              required
             />
-          </Form.Group>
-          <Form.Group controlId="resolution" className="mb-4">
-            <Form.Label>Camera Resolution:</Form.Label>
-            <Form.Control
-              type="text"
+          </Form.Item>
+
+          <Form.Item
+            label="Camera Resolution"
+            name="resolution"
+            initialValue={resolution}
+            rules={[{ required: true, message: "Please enter resolution" }]}
+          >
+            <Input
               placeholder="Enter camera resolution"
               value={resolution}
               onChange={(e) => setResolution(e.target.value)}
-              required
             />
-          </Form.Group>
-          <Button type="submit" className="custom-button">
-            Save Changes
-          </Button>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block>
+              Save Changes
+            </Button>
+          </Form.Item>
         </Form>
-      </Container>
+      </div>
     </>
   );
 }

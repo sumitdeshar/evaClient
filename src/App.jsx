@@ -9,14 +9,7 @@ import AddCameraForm from "./components/project/AddCamera";
 import ViewProjectDetails from "./components/project/ViewProject";
 import EventPage from "./pages/EventPage";
 import EventDetails from "./pages/EventDetails";
-
-// function App() {
-//   console.log("App component rendered");
-
-//   return <h1>Hello, World!</h1>;
-// }
-
-// export default App;
+import ConfigPage from "./pages/ConfigPage";
 
 function App() {
   return (
@@ -25,12 +18,14 @@ function App() {
         <Routes>
           <Route path="/" element={<Homepage />} />
           <Route path="/projects" element={<ProjectDisplay />} />
+          <Route path="/config" element={<ConfigPage />} />
+          {/* project routes */}
           <Route path="/viewproject" element={<ViewProjectDetails />} />
-          {/* <Route path="/projects/:projectId" element={<Event />} /> */}
-          <Route path="/projects/:projectId/event" element={<EventPage />} />
           <Route path="/addproject" element={<ProjectForm />} />
           <Route path="/editproject" element={<ProjectEditForm />} />
           <Route path="/addcamera" element={<AddCameraForm />} />
+          {/* event routes */}
+          <Route path="/projects/:projectId/event" element={<EventPage />} />
           <Route path="/:eventId/eventdetail" element={<EventDetails />} />
         </Routes>
       </BrowserRouter>
@@ -39,3 +34,11 @@ function App() {
 }
 
 export default App;
+
+// function App() {
+//   console.log("App component rendered");
+
+//   return <h1>Hello, World!</h1>;
+// }
+
+// export default App;

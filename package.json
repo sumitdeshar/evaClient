@@ -12,8 +12,12 @@
   "dependencies": {
     "@cloudinary/react": "^1.13.0",
     "@cloudinary/url-gen": "^1.21.0",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
+    "@mui/material": "^6.1.5",
+    "antd": "^5.21.6",
     "axios": "^1.7.3",
     "bootstrap": "^5.3.3",
     "react": "^18.3.1",

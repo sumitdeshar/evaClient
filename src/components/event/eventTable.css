@@ -1,0 +1,62 @@
+/* Event Table Container */
+.event-table-container {
+  margin: 20px auto;
+  max-width: 1000px;
+}
+
+/* Title */
+.event-title {
+  font-size: 1.75rem;
+  color: var(--primary-blue);
+  font-weight: bold;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* Ant Design Table Overrides */
+.ant-table {
+  border-radius: 8px;
+  overflow: hidden;
+  font-family: "Roboto", sans-serif;
+}
+
+.ant-table-thead > tr > th {
+  background-color: var(--accent-color);
+  color: var(--primary-blue);
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.ant-table-tbody > tr > td {
+  color: #333;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 12px;
+}
+
+.ant-table-tbody > tr:hover > td {
+  background-color: #f4f8fb; /* Slight highlight on hover */
+}
+
+/* Vehicle Image */
+.vehicle-image {
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.vehicle-image:hover {
+  transform: scale(1.05);
+}
+
+/* Details Link */
+.details-link {
+  color: var(--primary-blue);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.details-link:hover {
+  color: #0f57a6;
+}
