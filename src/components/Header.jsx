@@ -33,9 +33,9 @@ export default function Header() {
         <Menu.Item key="projects" onClick={() => navigate("/projects")}>
           Projects
         </Menu.Item>
-        <Menu.Item key="settings" onClick={() => navigate("/config")}>
+        {/* <Menu.Item key="settings" onClick={() => navigate("/config")}>
           Settings
-        </Menu.Item>
+        </Menu.Item> */}
         <Menu.Item key="about">
           <a href="#">About</a>
         </Menu.Item>

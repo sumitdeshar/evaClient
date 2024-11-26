@@ -3,6 +3,7 @@ import "./eventTable.css";
 
 export default function EventTable(prop) {
   const { events, handleEventDetailView } = prop;
+  console.log(`asdfgh${events}`);
   const columns = [
     {
       title: <Checkbox />,
@@ -18,30 +19,31 @@ export default function EventTable(prop) {
       key: "image",
       render: (_, event) => (
         <Image
-          src={event.event_images[0]?.url || "https://picsum.photos/200"}
+          src={event.event_images[0]?.image_path || "https://picsum.photos/200"}
           width={80}
           className="vehicle-image"
-          preview={false}
+          preview={true}
         />
       ),
       width: 100,
     },
     {
       title: "Vehicle ID",
-      dataIndex: "vehicle_id",
+      dataIndex: "event_vehicle",
       key: "vehicle_id",
+      render: (vehicle) => `${vehicle.id || ""} `,
       align: "center",
     },
     {
-      title: "Type",
-      dataIndex: "type",
-      key: "type",
-      render: (text) => (text ? "Arriving" : "Leaving"),
+      title: "Arrival Status",
+      dataIndex: "event_vehicle",
+      key: "arrival_status",
+      render: (vehicle) => `${vehicle.arrival_status || "--"}`,
       align: "center",
     },
     {
       title: "Speed",
-      dataIndex: "vehicle",
+      dataIndex: "event_vehicle",
       key: "speed",
       render: (vehicle) => `${vehicle.speed_kph || "--"} km/h`,
       align: "center",
@@ -75,7 +77,7 @@ export default function EventTable(prop) {
           📋📃
         </span>
       ),
-      dataIndex: "actions",
+      dataIndex: "Actions",
       key: "actions",
       render: (_, event) => (
         <span
@@ -95,7 +97,7 @@ export default function EventTable(prop) {
       <Table
         columns={columns}
         dataSource={events}
-        pagination={false} // Let EventPagination handle pagination if needed
+        pagination={false}
         rowKey={(event) => event.id}
         bordered
         className="event-table"

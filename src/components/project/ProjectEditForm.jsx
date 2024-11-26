@@ -40,7 +40,7 @@ export default function ProjectEditForm() {
   const handleSubmit = async () => {
     if (!projectName || !projectLocation) return;
     await projectEditApi();
-    navigate(`/projects/${project.id}`);
+    navigate("/projects");
   };
 
   return (

@@ -1,5 +1,7 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { Layout, Row, Col, Image, Card, Typography } from "antd";
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+import { Layout, Card, Typography, Image, Modal } from "antd";
+import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import Header from "../components/Header";
 import "../App.css";
 
@@ -9,11 +11,35 @@ const { Content } = Layout;
 export default function EventDetails() {
   const location = useLocation();
   const { event } = location.state || {};
-  const navigate = useNavigate();
 
-  function handleImageGallery() {
-    navigate("ImageGallery");
-  }
+  // State for modal and current image
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  // Open modal and set current image
+  const handleImageClick = (index) => {
+    setCurrentImageIndex(index);
+    setIsModalVisible(true);
+  };
+
+  // Close modal
+  const handleCancel = () => {
+    setIsModalVisible(false);
+  };
+
+  // Navigate to next image
+  const handleNextImage = () => {
+    setCurrentImageIndex(
+      (prevIndex) => (prevIndex + 1) % event.event_images.length
+    );
+  };
+
+  // Navigate to previous image
+  const handlePrevImage = () => {
+    setCurrentImageIndex((prevIndex) =>
+      prevIndex === 0 ? event.event_images.length - 1 : prevIndex - 1
+    );
+  };
 
   return (
     <Layout>
@@ -43,6 +69,9 @@ export default function EventDetails() {
                   <Text strong>Event ID:</Text> {event.id}
                 </p>
                 <p>
+                  <Text strong>Camera ID:</Text> {event.camera_id}
+                </p>
+                <p>
                   <Text strong>Date:</Text>{" "}
                   {new Date(event.created_at).toLocaleDateString()}
                 </p>
@@ -51,8 +80,10 @@ export default function EventDetails() {
                   {new Date(event.created_at).toLocaleTimeString()}
                 </p>
                 <p>
-                  <Text strong>Type:</Text>{" "}
-                  {event.type ? "Arriving" : "Leaving"}
+                  <Text strong>Event Type:</Text> {event.event_type}
+                </p>
+                <p>
+                  <Text strong>Flagged:</Text> {event.flagged ? "Yes" : "No"}
                 </p>
               </Card>
 
@@ -62,19 +93,28 @@ export default function EventDetails() {
                 className="vehicle-info-card"
                 style={{ marginTop: "20px" }}
               >
-                <p>
-                  <Text strong>Vehicle ID:</Text> {event.vehicle_id}
-                </p>
-                <p>
-                  <Text strong>Speed:</Text> {event.vehicle.speed_kph} km/h
-                </p>
-                <p>
-                  <Text strong>Axles:</Text> {event.vehicle.num_axle}
-                </p>
-                <p>
-                  <Text strong>Loaded:</Text>{" "}
-                  {event.vehicle.is_loaded ? "Yes" : "No"}
-                </p>
+                {event.event_vehicle && (
+                  <>
+                    <p>
+                      <Text strong>Vehicle ID:</Text> {event.event_vehicle.id}
+                    </p>
+                    <p>
+                      <Text strong>Speed:</Text> {event.event_vehicle.speed_kph}{" "}
+                      km/h
+                    </p>
+                    <p>
+                      <Text strong>Axles:</Text> {event.event_vehicle.num_axle}
+                    </p>
+                    <p>
+                      <Text strong>Loaded:</Text>{" "}
+                      {event.event_vehicle.is_loaded ? "Yes" : "No"}
+                    </p>
+                    <p>
+                      <Text strong>Arrival Status:</Text>{" "}
+                      {event.event_vehicle.arrival_status}
+                    </p>
+                  </>
+                )}
               </Card>
             </div>
 
@@ -85,72 +125,43 @@ export default function EventDetails() {
                 bordered={false}
                 className="event-images-card"
               >
-                <Row gutter={[16, 16]} justify="center">
-                  {event.event_images && event.event_images.length > 0 ? (
-                    event.event_images.map((img, idx) => (
-                      <Col xs={24} key={idx}>
-                        <Image
-                          src={img.url}
-                          alt={`Event ${event.id}`}
-                          style={{
-                            cursor: "pointer",
-                            width: "100%",
-                            height: "auto",
-                            maxHeight: "300px", // Fixed height for consistency
-                            objectFit: "cover",
-                          }}
-                          onClick={handleImageGallery}
-                        />
-                      </Col>
-                    ))
-                  ) : (
-                    // Placeholder images in the same style
-                    <>
-                      <Col xs={24}>
-                        <Image
-                          src="https://picsum.photos/600/500"
-                          alt="Placeholder 1"
-                          style={{
-                            cursor: "pointer",
-                            width: "100%",
-                            height: "auto",
-                            maxHeight: "300px",
-                            objectFit: "cover",
-                          }}
-                          onClick={handleImageGallery}
-                        />
-                      </Col>
-                      <Col xs={24}>
-                        <Image
-                          src="https://picsum.photos/600/501"
-                          alt="Placeholder 2"
-                          style={{
-                            cursor: "pointer",
-                            width: "100%",
-                            height: "auto",
-                            maxHeight: "300px",
-                            objectFit: "cover",
-                          }}
-                          onClick={handleImageGallery}
-                        />
-                      </Col>
-                      <Col xs={24}>
-                        <Image
-                          src="https://picsum.photos/600/502"
-                          alt="Placeholder 3"
-                          style={{
-                            cursor: "pointer",
-                            width: "100%",
-                            height: "auto",
-                            maxHeight: "300px",
-                            objectFit: "cover",
-                          }}
-                          onClick={handleImageGallery}
-                        />
-                      </Col>
-                    </>
-                  )}
-                </Row>
+                {event.event_images && event.event_images.length > 0 ? (
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns:
+                        "repeat(auto-fill, minmax(200px, 1fr))",
+                      gap: "16px",
+                    }}
+                  >
+                    {event.event_images.map((img, idx) => (
+                      <Image
+                        key={idx}
+                        src={img.image_path}
+                        alt={`Event ${event.id} - Image ${img.image_no}`}
+                        style={{
+                          cursor: "pointer",
+                          width: "100%",
+                          height: "200px",
+                          objectFit: "contain",
+                          objectPosition: "center",
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                        }}
+                        onClick={() => handleImageClick(idx)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <Text
+                    type="secondary"
+                    style={{ textAlign: "center", display: "block" }}
+                  >
+                    No images available
+                  </Text>
+                )}
               </Card>
             </div>
           </div>
@@ -161,6 +172,84 @@ export default function EventDetails() {
           >
             No event data available.
           </Text>
+        )}
+
+        {/* Image Modal Carousel */}
+        {event && event.event_images && event.event_images.length > 0 && (
+          <Modal
+            open={isModalVisible}
+            onCancel={handleCancel}
+            footer={null}
+            width="80%"
+            centered
+            bodyStyle={{ padding: 0 }}
+          >
+            <div style={{ position: "relative", textAlign: "center" }}>
+              <Image
+                src={event.event_images[currentImageIndex].image_path}
+                alt={`Event ${event.id} - Image ${event.event_images[currentImageIndex].image_no}`}
+                style={{
+                  width: "100%",
+                  maxHeight: "70vh",
+                  objectFit: "contain",
+                }}
+                preview={false}
+              />
+              {event.event_images.length > 1 && (
+                <>
+                  <div
+                    onClick={handlePrevImage}
+                    style={{
+                      position: "absolute",
+                      left: 20,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                      fontSize: "2rem",
+                      color: "white",
+                      background: "rgba(0,0,0,0.5)",
+                      borderRadius: "50%",
+                      padding: "10px",
+                    }}
+                  >
+                    <LeftOutlined />
+                  </div>
+                  <div
+                    onClick={handleNextImage}
+                    style={{
+                      position: "absolute",
+                      right: 20,
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      cursor: "pointer",
+                      fontSize: "2rem",
+                      color: "white",
+                      background: "rgba(0,0,0,0.5)",
+                      borderRadius: "50%",
+                      padding: "10px",
+                    }}
+                  >
+                    <RightOutlined />
+                  </div>
+                </>
+              )}
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "10px",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  fontSize: "12px",
+                  color: "white",
+                  background: "rgba(0, 0, 0, 0.4)",
+                  padding: "4px 8px",
+                  borderRadius: "4px",
+                }}
+              >
+                Image {currentImageIndex + 1} of {event.event_images.length}
+              </div>
+            </div>
+          </Modal>
         )}
       </Content>
     </Layout>

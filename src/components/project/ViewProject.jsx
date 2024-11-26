@@ -22,7 +22,7 @@ export default function ViewProjectDetails() {
       const response = await axios.get(
         `${API_BASE_URL}/${project.id}/get_cameras`
       );
-      setCameras(response.data);
+      setCameras(response.data.cameras);
       console.log("Data received:", response.data);
     } catch (error) {
       console.error("Error fetching data:", error);

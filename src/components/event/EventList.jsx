@@ -19,17 +19,17 @@ export default function EventList(prop) {
   const firstIndex = lastIndex - prop.eventsPerPage;
 
   const eventsList = events.slice(firstIndex, lastIndex);
-  const npage = Math.ceil(events.length / prop.eventsPerPage);
+  const npage = Math.ceil(events.length / (prop.eventsPerPage || 1));
 
   useEffect(() => {
     const fetchEvents = async () => {
       if (!selectedCamera) return;
       try {
         const response = await axios.get(
-          `${API_BASE_URL}/${selectedCamera}/events`
+          `${API_BASE_URL}/${selectedCamera}/get_valid_events`
         );
-        console.log(response.data.event, "asdf");
-        setEvents(response.data.event);
+        console.log(response.data, "asdf");
+        setEvents(response.data);
       } catch (err) {
         console.error("Error fetching events:", err);
       }

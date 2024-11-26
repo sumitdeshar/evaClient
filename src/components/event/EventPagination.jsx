@@ -8,8 +8,8 @@ export default function EventPagination(prop) {
       <Pagination
         className="justify-content-center"
         current={currentPage}
-        total={npage * eventsPerPage}
-        pageSize={eventsPerPage}
+        total={(npage || 1) * (eventsPerPage || 1)} // Fallback to avoid NaN
+        pageSize={eventsPerPage || 1} // Ensure a valid pageSize
         onChange={(page) => paginate(page)}
         showSizeChanger={false}
         showQuickJumper={false}

@@ -8,6 +8,7 @@ import { API_BASE_URL } from "../Utils/api";
 export default function ConfigPage() {
   const [configEventsPerPage, setcConfigEventsPerPage] = useState(10); // Saved value
   const [sliderValue, setSliderValue] = useState(10); // Slider selection value
+  const id = 1;
 
   const handleSliderChange = (event, newValue) => {
     setSliderValue(newValue); // Update only the slider's temporary value
