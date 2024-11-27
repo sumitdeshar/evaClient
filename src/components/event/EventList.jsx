@@ -28,7 +28,6 @@ export default function EventList(prop) {
         const response = await axios.get(
           `${API_BASE_URL}/${selectedCamera}/get_valid_events`
         );
-        console.log(response.data, "asdf");
         setEvents(response.data);
       } catch (err) {
         console.error("Error fetching events:", err);
@@ -44,21 +43,21 @@ export default function EventList(prop) {
   const handleEventDetailView = (event) => {
     navigate("/:eventId/eventdetail", { state: { event: event } });
   };
-  // const handleEventDeletion = (event) => {
-  //   console.log(`Event to delete:${event}`);
-  // };
+  const handleEventDeletion = async (event) => {
+    console.log(`Event to delete:${event}`);
+  };
 
   return selectedCamera ? (
     events.length > 0 ? (
       <>
         {/* <ActionButtons
-          setEventsPerPage={prop.setEventsPerPage}
-          eventsPerPage={prop.eventsPerPage}
           handleDelete={handleEventDeletion}
+          selectedRows={selectedRows}
         /> */}
         <EventTable
           events={eventsList}
           handleEventDetailView={handleEventDetailView}
+          handleDelete={handleEventDeletion}
         />
         <EventPagination
           npage={npage}

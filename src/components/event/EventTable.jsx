@@ -1,18 +1,12 @@
-import { Table, Image, Checkbox } from "antd";
+import { Button, Table, Image, Flex } from "antd";
+import { useState } from "react";
 import "./eventTable.css";
 
 export default function EventTable(prop) {
-  const { events, handleEventDetailView } = prop;
-  console.log(`asdfgh${events}`);
+  const { events, handleEventDetailView, handleDelete } = prop;
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+  console.log(`${events}`);
   const columns = [
-    {
-      title: <Checkbox />,
-      dataIndex: "select",
-      key: "select",
-      render: () => <Checkbox />,
-      width: 50,
-      align: "center",
-    },
     {
       title: "Vehicle Image",
       dataIndex: "image",
@@ -91,17 +85,64 @@ export default function EventTable(prop) {
     },
   ];
 
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: (newSelectedRowKeys, selectedRows) => {
+      const selectedIds = selectedRows.map((row) => row.id);
+      setSelectedRowKeys(selectedIds);
+      console.log("Selected Row IDs:", selectedIds);
+    },
+  };
+
+  const hasSelected = selectedRowKeys.length > 0;
+
   return (
-    <div className="event-table-container">
+    <Flex gap="middle" vertical>
       <h2 className="event-title">Event List</h2>
+      <Flex align="center" gap="middle">
+        <Button
+          type="primary"
+          color="danger"
+          onClick={() => handleDelete(selectedRowKeys)} // Pass selected keys to delete handler
+          disabled={!hasSelected}
+        >
+          Delete
+        </Button>
+        {hasSelected ? `Selected ${selectedRowKeys.length} items` : null}
+      </Flex>
       <Table
         columns={columns}
         dataSource={events}
         pagination={false}
         rowKey={(event) => event.id}
         bordered
+        rowSelection={rowSelection} // Enable row selection
         className="event-table"
       />
-    </div>
+    </Flex>
   );
 }
+// <div className="event-table-container">
+//   <h2 className="event-title">Event List</h2>
+//   <Button
+//     type="primary"
+//     onClick={start}
+//     disabled={!hasSelected}
+//     loading={loading}
+//   >
+//     Reload
+//   </Button>
+//   {hasSelected ? `Selected ${selectedRowKeys.length} items` : null}
+//   {console.log(selectedRowKeys)}
+//   <Table
+//     columns={columns}
+//     dataSource={events}
+//     pagination={false}
+//     rowKey={(event) => event.id}
+//     bordered
+//     rowSelection={selectedRowKeys}
+//     className="event-table"
+//   />
+// </div>
+//   );
+// }
